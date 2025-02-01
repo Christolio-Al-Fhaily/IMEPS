@@ -1,0 +1,57 @@
+.navbar{
+    height: 50px;
+    background-color: #003580;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navContainer{
+    width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo{
+    margin-left: 10px;
+    margin-right: auto;
+    font-weight: 500;
+  }
+  
+  .navItems {
+    display: flex;
+    align-items: center;
+   
+  }
+
+  .navButton{
+    margin-left: 20px;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: white;
+    
+  }
+/* Align login button to the right */
+.loginButton {
+  margin-left: auto; /* Push the login button to the far right */
+  border-radius: 20px; /* Rounded corners */
+  padding: 5px 15px; /* Adjust padding to make the button smaller */
+  background-color: #003580; /* Set the default background to the navbar color */
+  color: white; /* White text by default */
+  text-decoration: none; /* Remove underline from the link */
+  display: inline-flex; /* Use inline-flex for correct alignment */
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
+  height: 30px; /* Set a fixed height to ensure consistent vertical centering */
+  border: 2px solid #003580; /* Border around the button */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Hover effect */
+.loginButton:hover {
+  background-color: white; /* White background on hover */
+  color: #003580; /* Change text color to navbar color on hover */
+  border: 2px solid #003580; /* Keep the border on hover */
+}

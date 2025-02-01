@@ -1,0 +1,59 @@
+/* src/pages/home/home.css */
+.carousel {
+  width: 100%; /* Full width */
+  max-width: 1200px; /* Optional: Set a max width for the carousel */
+  margin: 0 auto; /* Center the carousel */
+  overflow: hidden; /* Hide the overflowed images */
+  position: relative; /* Positioning of slides */
+}
+
+.carousel-track {
+  display: flex; /* Align images horizontally */
+  transition: transform 1s ease-in-out; /* Smooth transition between slides */
+}
+
+.carousel-slide {
+  width: 33.33%; /* Each image takes up 1/3 of the width */
+  object-fit: cover; /* Make sure images cover the space without distortion */
+}
+
+.home {
+    text-align: center;
+    padding: 50px;
+    width: 100vw;
+    height: 100vh; /* This ensures the height takes up the full viewport height */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers content vertically */ 
+  }
+  
+  .home h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .home p {
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+  
+  .homeLinks {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .homeButton {
+    color: white;
+    text-decoration: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #003580;
+    border-radius: 5px;
+  }
+  
+  .homeButton:hover {
+    background-color: #003580;
+  }
+  
