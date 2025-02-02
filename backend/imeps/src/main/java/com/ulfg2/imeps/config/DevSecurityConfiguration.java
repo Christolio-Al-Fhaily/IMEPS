@@ -23,6 +23,7 @@ public class DevSecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll() // Allow H2 console access
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/test").permitAll()
                         .anyRequest().authenticated() // Secure other endpoints
                 ).httpBasic(withDefaults());
 

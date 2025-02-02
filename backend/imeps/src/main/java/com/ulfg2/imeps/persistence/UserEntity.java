@@ -15,8 +15,6 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    private String firstName;
-    private String lastName;
     @Column(unique = true)
     private String username;
     private String password;
@@ -27,10 +25,8 @@ public class UserEntity implements UserDetails {
 
     }
 
-    public UserEntity(int id, String firstName, String lastName, String username, String password, boolean isAdmin) {
+    public UserEntity(int id, String username, String password, boolean isAdmin) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
@@ -42,22 +38,6 @@ public class UserEntity implements UserDetails {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public void setUsername(String email) {
