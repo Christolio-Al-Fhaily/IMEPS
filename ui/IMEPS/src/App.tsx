@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar.tsx";
 import Home from "./pages/Home.tsx";
 import {Box} from "@chakra-ui/react";
 import LoginPage from "./pages/LoginPage.tsx";
+import University from "./pages/University.tsx";
 
 const App = () => {
     return (
@@ -13,7 +14,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path={"/login"} element={<LoginPage/>}/>
-                    {/*<Route path="/universities" element={<University/>}/>*/}
+                    {<Route path="/universities" element={<University/>}/>}
                     {/*<Route path="/bourses" element={<Bourse/>}/>*/}
                 </Routes>
             </Box>
