@@ -10,13 +10,13 @@ const Navbar = () => {
         <HStack background={"primary"} width={"100vw"} height={"50px"}>
             <Image src={ulfg2logo} h={"100%"}/>
             <Box flex={"1"} display={"flex"} justifyContent={"center"} gap={"4"}>
-                <Button background={"primary"} color={"white"} onClick={() => navigate("/")}>
+                <Button background={"primary"} color={"white"} width="100px" onClick={() => navigate("/")}>
                     Home
                 </Button>
-                <Button background={"primary"} color={"white"} onClick={() => navigate("/universities")}>
+                <Button background={"primary"} color={"white"} width="100px" onClick={() => navigate("/universities")}>
                     Universities
                 </Button>
-                <Button background={"primary"} color={"white"} onClick={() => navigate("/scholarships")}>
+                <Button background={"primary"} color={"white"} width="100px" onClick={() => navigate("/scholarships")}>
                     Scholarships
                 </Button>
             </Box>
