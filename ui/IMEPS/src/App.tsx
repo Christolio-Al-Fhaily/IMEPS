@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import ScholarshipsPage from "./pages/ScholarshipsPage.tsx";
 import University from "./pages/University.tsx";
 import Adminpage from "./pages/Admin.tsx";
+import Students from "./pages/Students.tsx";
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                     {<Route path="/universities" element={<University/>}/>}
                     {<Route path="/admin" element={<Adminpage/>}/>}
                     <Route path="/scholarships" element={<ScholarshipsPage/>}/>
+                    <Route path="/students" element={<Students/>}/>
                 </Routes>
             </Box>
         </Router>
