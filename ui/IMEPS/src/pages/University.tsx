@@ -12,6 +12,11 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {
+  fetchCountries,
+  fetchUniversities,
+  fetchLogosForUniversities,
+} from "../services/universityService.tsx";
 
 interface Country {
   id: number;
@@ -34,84 +39,34 @@ const UniversityPage: React.FC = () => {
   const [loadingLogos, setLoadingLogos] = useState<boolean>(false);
   const toast = useToast();
 
+  // Hardcoded credentials (replace with actual login logic)
+  const username = "your-username";
+  const password = "your-password";
+
   // Fetch countries from the backend
   useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/countries");
-        if (!response.ok) {
-          throw new Error("Failed to fetch countries");
-        }
-        const data = await response.json();
-        setCountries(data);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to fetch countries",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
+    const loadCountries = async () => {
+      const data = await fetchCountries(username, password); // Pass credentials
+      console.log("Countries loaded:", data); // Debugging
+      setCountries(data);
     };
-
-    fetchCountries();
-  }, [toast]);
+    loadCountries();
+  }, [username, password]);
 
   // Fetch universities from the backend
   useEffect(() => {
-    const fetchUniversities = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/universities");
-        if (!response.ok) {
-          throw new Error("Failed to fetch universities");
-        }
-        const data = await response.json();
-        setUniversities(data);
-        fetchLogosForUniversities(data); // Fetch logos after universities are loaded
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to fetch universities",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
+    const loadUniversities = async () => {
+      const data = await fetchUniversities(username, password); // Pass credentials
+      console.log("Universities loaded:", data); // Debugging
+      setUniversities(data);
+      setLoadingLogos(true);
+      const updatedUniversities = await fetchLogosForUniversities(data);
+      console.log("Universities with logos:", updatedUniversities); // Debugging
+      setUniversities(updatedUniversities);
+      setLoadingLogos(false);
     };
-
-    fetchUniversities();
-  }, [toast]);
-
-  // Fetch logos for universities
-  const fetchLogosForUniversities = async (universities: University[]) => {
-    setLoadingLogos(true);
-    const updatedUniversities = await Promise.all(
-      universities.map(async (uni) => {
-        const logoUrl = await fetchLogoFromWikipedia(uni.name);
-        return { ...uni, logoUrl };
-      })
-    );
-    setUniversities(updatedUniversities);
-    setLoadingLogos(false);
-  };
-
-  // Fetch logo from Wikipedia
-  const fetchLogoFromWikipedia = async (universityName: string): Promise<string | null> => {
-    try {
-      const response = await fetch(
-        `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(
-          universityName
-        )}&prop=pageimages&format=json&pithumbsize=100&origin=*`
-      );
-      const data = await response.json();
-      const page = Object.values(data.query.pages)[0] as any;
-      return page.thumbnail?.source || null;
-    } catch (error) {
-      console.error("Failed to fetch logo from Wikipedia:", error);
-      return null;
-    }
-  };
+    loadUniversities();
+  }, [username, password]);
 
   // Handle flag selection
   const handleFlagClick = (countryName: string) => {
@@ -178,43 +133,49 @@ const UniversityPage: React.FC = () => {
         </Center>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-          {filteredUniversities.map((uni) => (
-            <Box
-              key={uni.id}
-              p={5}
-              borderWidth="1px"
-              borderRadius="lg"
-              boxShadow="md"
-              _hover={{ boxShadow: "lg" }}
-            >
-              {/* University Logo */}
-              {uni.logoUrl ? (
-                <Image
-                  src={uni.logoUrl}
-                  alt={uni.name}
-                  boxSize="100px"
-                  mx="auto"
-                  mb={4}
-                />
-              ) : (
-                <Box boxSize="100px" mx="auto" mb={4} bg="gray.200" borderRadius="md" />
-              )}
-              <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-                {uni.name}
-              </Text>
-              <Text mt={2} color="gray.600" textAlign="center">
-                {uni.location}{" "}
-                <Image
-                  src={`https://flagcdn.com/${uni.countryCode.toLowerCase()}.svg`}
-                  alt={uni.location}
-                  boxSize="20px"
-                  display="inline-block"
-                  verticalAlign="middle"
-                  ml={2}
-                />
-              </Text>
-            </Box>
-          ))}
+          {filteredUniversities.length > 0 ? (
+            filteredUniversities.map((uni) => (
+              <Box
+                key={uni.id}
+                p={5}
+                borderWidth="1px"
+                borderRadius="lg"
+                boxShadow="md"
+                _hover={{ boxShadow: "lg" }}
+              >
+                {/* University Logo */}
+                {uni.logoUrl ? (
+                  <Image
+                    src={uni.logoUrl}
+                    alt={uni.name}
+                    boxSize="100px"
+                    mx="auto"
+                    mb={4}
+                  />
+                ) : (
+                  <Box boxSize="100px" mx="auto" mb={4} bg="gray.200" borderRadius="md" />
+                )}
+                <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+                  {uni.name}
+                </Text>
+                <Text mt={2} color="gray.600" textAlign="center">
+                  {uni.location}{" "}
+                  <Image
+                    src={`https://flagcdn.com/${uni.countryCode.toLowerCase()}.svg`}
+                    alt={uni.location}
+                    boxSize="20px"
+                    display="inline-block"
+                    verticalAlign="middle"
+                    ml={2}
+                  />
+                </Text>
+              </Box>
+            ))
+          ) : (
+            <Text textAlign="center" fontSize="lg" color="gray.500">
+              No universities found.
+            </Text>
+          )}
         </SimpleGrid>
       )}
     </Box>
