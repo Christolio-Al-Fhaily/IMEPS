@@ -21,15 +21,18 @@ public class UserEntity implements UserDetails {
     @ColumnDefault(value = "false")
     private boolean isAdmin;
 
+    private int ulBranch;
+
     public UserEntity() {
 
     }
 
-    public UserEntity(int id, String username, String password, boolean isAdmin) {
+    public UserEntity(int id, String username, String password, boolean isAdmin, int ulBranch) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
+        this.ulBranch = ulBranch;
     }
 
     public int getId() {
@@ -68,5 +71,13 @@ public class UserEntity implements UserDetails {
 
     public void setIsAdmin(boolean role) {
         this.isAdmin = role;
+    }
+
+    public int getUlBranch() {
+        return ulBranch;
+    }
+
+    public void setUlBranch(int ulBranch) {
+        this.ulBranch = ulBranch;
     }
 }
