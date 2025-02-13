@@ -1,32 +1,44 @@
-import {useState} from "react";
-import {Button, Card, Container, FormControl, FormLabel, Heading, Input, VStack} from "@chakra-ui/react";
-import useAxiosAuth from "../hooks/useAxiosAuth.tsx";
+import { useState } from "react";
+import {
+    Button,
+    Card,
+    Container,
+    FormControl,
+    FormLabel,
+    Heading,
+    Input,
+    VStack
+} from "@chakra-ui/react";
+import axios from "axios";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const api = useAxiosAuth(email, password);
     const handleLogin = async () => {
-        // Add login logic here
         try {
-            const response = await api.post("/login");
-            console.log(response.data);
+            const response = await axios.post("http://localhost:8080/login", {
+                username: email,
+                password: password
+            });
+
+            const { username, isAdmin } = response.data;
+
+            // Store credentials for Basic Auth
+            const credentials = btoa(`${email}:${password}`);
+            localStorage.setItem("authToken", credentials);
+            localStorage.setItem("username", username);
+            localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
+
+            console.log("Login Successful", response.data);
         } catch (error) {
-            console.error("Error fetching data", error);
+            console.error("Error logging in", error);
         }
     };
 
     return (
         <Container maxW="lg" centerContent my={"50"} color={"black"}>
-            <Card
-                p={8}
-                boxShadow="lg"
-                borderRadius="lg"
-                bg="white"
-                w="100%"
-                textAlign="center"
-            >
+            <Card p={8} boxShadow="lg" borderRadius="lg" bg="white" w="100%" textAlign="center">
                 <Heading size="xl" mb={6}>
                     Login
                 </Heading>
