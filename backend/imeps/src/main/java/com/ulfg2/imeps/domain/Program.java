@@ -7,4 +7,5 @@ public record Program(int id,
                       String department,
                       String type,
                       LocalDate submissionDueDate,
-                      String academicYear) {}
+                      String academicYear,
+                      University university) {}
