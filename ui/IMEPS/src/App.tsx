@@ -6,7 +6,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import UniversityPage from "./pages/UniversityPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
-import ScholarshipPage from "./pages/ScholarshipPage.tsx";
+import ScholarshipsPage from "./pages/ScholarshipsPage.tsx";
 import {UserProvider} from "./services/UserService.tsx";
 import ProtectedRoute from "./services/ProtectedRoute.tsx";
 
@@ -28,7 +28,7 @@ const App = () => {
                         <Route element={<ProtectedRoute/>}>
                             <Route path="/user" element={<UserPage/>}/>
                         </Route>
-                        {<Route path="/bourses" element={<ScholarshipPage/>}/>}
+                        {<Route path="/scholarships" element={<ScholarshipsPage/>}/>}
                     </Routes>
                 </Box>
             </Router>
