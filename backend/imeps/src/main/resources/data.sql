@@ -1,12 +1,12 @@
-INSERT INTO users (username, password, IS_ADMIN)
-VALUES ('admin', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1);
+INSERT INTO users (username, password, IS_ADMIN, UL_BRANCH)
+VALUES ('admin', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1, 2);
 
-INSERT INTO users (username, password)
-VALUES ('janesmith', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK'),
-       ('emilyjohnson', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK'),
-       ('michaelbrown', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK'),
-       ('sarahwilliams', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK'),
-       ('hannaaad', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK');
+INSERT INTO users (username, password, UL_BRANCH)
+VALUES ('janesmith', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 2),
+       ('emilyjohnson', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1),
+       ('michaelbrown', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1),
+       ('sarahwilliams', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 2),
+       ('hannaaad', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 3);
 
 INSERT INTO countries (name, code)
 VALUES ('France', 'FR'),
@@ -42,16 +42,16 @@ VALUES ('AI Research', 'Masters', 1, '2025-01-10', '2024', 'Electrical'),
 
 -- Associate students with programs (many-to-many relationship)
 INSERT INTO program_student (student_id, program_id, status)
-VALUES (1, 1, 'Pending'),
-       (1, 2, 'Enrolled'),
-       (2, 2, 'Enrolled'),
-       (2, 3, 'Pending'),
-       (3, 3, 'Rejected'),
-       (3, 4, 'Pending'),
-       (4, 4, 'Enrolled'),
-       (4, 5, 'Pending'),
-       (5, 5, 'Enrolled'),
-       (5, 1, 'Pending');
+VALUES (1, 1, 'pending'),
+       (1, 2, 'enrolled'),
+       (2, 2, 'enrolled'),
+       (2, 3, 'pending'),
+       (3, 3, 'rejected'),
+       (3, 4, 'pending'),
+       (4, 4, 'enrolled'),
+       (4, 5, 'pending'),
+       (5, 5, 'enrolled'),
+       (5, 1, 'pending');
 
 -- Insert scholarships
 INSERT INTO scholarships (name, description, duration)
