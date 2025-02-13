@@ -9,8 +9,8 @@ public class UniversityEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     private String name;
-    private int country_id;
-    private int convention_id;
+    private int countryId;
+    private int conventionId;
 
     public UniversityEntity() {
     }
@@ -36,19 +36,19 @@ public class UniversityEntity {
         this.name = name;
     }
 
-    public int getCountry_id() {
-        return country_id;
+    public int getCountryId() {
+        return countryId;
     }
 
-    public void setCountry_id(int country_id) {
-        this.country_id = country_id;
+    public void setCountryId(int country_id) {
+        this.countryId = country_id;
     }
 
-    public int getConvention_id() {
-        return convention_id;
+    public int getConventionId() {
+        return conventionId;
     }
 
-    public void setConvention_id(int convention_id) {
-        this.convention_id = convention_id;
+    public void setConventionId(int convention_id) {
+        this.conventionId = convention_id;
     }
 }
