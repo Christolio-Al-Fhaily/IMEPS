@@ -2,11 +2,11 @@ INSERT INTO users (username, password, IS_ADMIN, UL_BRANCH)
 VALUES ('admin', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1, 2);
 
 INSERT INTO users (username, password, UL_BRANCH)
-VALUES ('janesmith', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 2),
-       ('emilyjohnson', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1),
-       ('michaelbrown', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1),
-       ('sarahwilliams', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 2),
-       ('hannaaad', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 3);
+VALUES ('janesmith@ul.com', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 2),
+       ('emilyjohnson@ul.com', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1),
+       ('michaelbrown@ul.com', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 1),
+       ('sarahwilliams@ul.com', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 2),
+       ('hannaaad@ul.com', '$2a$10$qJ4i52JaJBpj/bhHzRavR.rvZzxXExTTVg5eUSMGqQxdsb/FaGIBK', 3);
 
 INSERT INTO countries (name, code)
 VALUES ('France', 'FR'),
@@ -61,7 +61,7 @@ VALUES ('Merit Scholarship', 'Awarded to students with outstanding academic perf
        ('Financial Aid', 'Support for students in financial need', 4),
        ('International Student Grant', 'Aid for international students studying abroad', 2);
 
-INSERT INTO student_scholarship(student_id, scholarship_id)
-VALUES (1, 1),
-       (2, 2),
-       (3, 2);
+INSERT INTO student_scholarship(student_id, scholarship_id, status)
+VALUES (1, 1, 'pending'),
+       (2, 2, 'rejected'),
+       (3, 2, 'accepted');
