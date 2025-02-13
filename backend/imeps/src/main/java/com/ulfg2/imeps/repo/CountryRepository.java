@@ -4,4 +4,5 @@ import com.ulfg2.imeps.persistence.CountryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CountryRepository extends JpaRepository<CountryEntity, Integer> {
+    CountryEntity findByCode(String code);
 }
