@@ -5,6 +5,7 @@ import com.ulfg2.imeps.service.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class ProgramController {
     }
 
     @PostMapping("/programs")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> createProgram(@RequestBody Program program) throws Exception {
         service.createProgram(program);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/programs/{programId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteProgram(@PathVariable int programId) {
         service.deleteProgram(programId);
         return new ResponseEntity<>(HttpStatus.OK);

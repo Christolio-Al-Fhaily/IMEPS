@@ -49,7 +49,14 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of((GrantedAuthority) () -> isAdmin ? "ROLE_ADMIN" : "ROLE_STUDENT");
+        if (isAdmin) {
+            return Set.of(
+                    (GrantedAuthority) () -> "ROLE_ADMIN",
+                    (GrantedAuthority) () -> "ROLE_STUDENT"
+            );
+        } else {
+            return Set.of((GrantedAuthority) () -> "ROLE_STUDENT");
+        }
     }
 
     public String getPassword() {
