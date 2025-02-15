@@ -23,7 +23,7 @@ public class CountryService {
         return country;
     }
 
-    public CountryEntity getByCountryCode(String code) {
+    public Optional<CountryEntity> getByCountryCode(String code) {
         return repo.findByCode(code);
     }
 
@@ -31,7 +31,7 @@ public class CountryService {
         return repo.findById(id);
     }
 
-    public void create(CountryEntity entity) {
-        repo.save(entity);
+    public CountryEntity create(CountryEntity entity) {
+        return repo.save(entity);
     }
 }
