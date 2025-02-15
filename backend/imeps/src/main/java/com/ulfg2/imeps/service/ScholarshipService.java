@@ -21,4 +21,16 @@ public class ScholarshipService {
         scholarshipEntities.forEach(s -> scholarships.add(new Scholarship(s.getId(), s.getName(), s.getDescription(), s.getDuration())));
         return scholarships;
     }
+
+    public void createScholarship(Scholarship scholarship) {
+        ScholarshipEntity entity = new ScholarshipEntity();
+        entity.setDescription(scholarship.description());
+        entity.setDuration(scholarship.duration());
+        entity.setName(scholarship.name());
+        repo.save(entity);
+    }
+
+    public void deleteScholarship(int id) {
+        repo.deleteById(id);
+    }
 }
