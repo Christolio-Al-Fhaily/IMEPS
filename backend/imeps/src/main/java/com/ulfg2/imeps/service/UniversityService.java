@@ -29,7 +29,7 @@ public class UniversityService {
     }
 
     public List<University> getByCountryCode(String countryCode) {
-        CountryEntity country = countryService.getByCountryCode(countryCode);
+        CountryEntity country = countryService.getByCountryCode(countryCode).get();
         List<UniversityEntity> universityEntities = uniRepo.findAllByCountryId(country.getId());
         List<University> universities = new ArrayList<>();
         universityEntities.forEach(u -> universities.add(new University(u.getId(), u.getName(), new Country(country.getName(), country.getCode()), conventionService.getById(u.getConventionId()), u.getLogoUrl())));
@@ -41,7 +41,7 @@ public class UniversityService {
         return toDomain(entity);
     }
 
-    public Optional<UniversityEntity> getOptionalById(int id){
+    public Optional<UniversityEntity> getOptionalById(int id) {
         return uniRepo.findById(id);
     }
 
@@ -67,7 +67,16 @@ public class UniversityService {
 
     public void create(University university) {
         int conventionId = conventionService.create(university.convention());
-        CountryEntity countryEntity = countryService.getByCountryCode(university.country().code());
+        Optional<CountryEntity> entity = countryService.getByCountryCode(university.country().code());
+        CountryEntity countryEntity;
+        if (entity.isEmpty()) {
+            countryEntity = new CountryEntity();
+            countryEntity.setName(university.country().name());
+            countryEntity.setCode(university.country().code());
+            countryService.create(countryEntity);
+        } else {
+            countryEntity = entity.get();
+        }
         UniversityEntity universityEntity = new UniversityEntity();
         universityEntity.setCountryId(countryEntity.getId());
         universityEntity.setName(university.name());
