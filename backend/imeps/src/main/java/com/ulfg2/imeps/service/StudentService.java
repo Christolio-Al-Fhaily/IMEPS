@@ -12,9 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +29,8 @@ public class StudentService {
     @Autowired
     StudentScholarshipRepository studentScholarshipRepository;
 
-    public List<Student> findByUlBranchAndByStatus(Integer ulBranch, String status, Integer scholarshipId) {
-        List<Student> students = new ArrayList<>();
+    public List<Student> findByFilter(Integer ulBranch, String status, Integer scholarshipId) {
+        Map<Integer, Student> students = new HashMap<>();
         List<ProgramStudentEntity> programStudentsByStatus = programStudentRepository.findAll();
         List<StudentScholarshipEntity> studentScholarshipByScholarship = studentScholarshipRepository.findAll();
 
@@ -46,14 +44,18 @@ public class StudentService {
             if (ulBranch == null || student.ulBranch() == ulBranch) {
                 Program program = programService.findById(ps.getId().getProgramId());
                 Candidature candidature = new Candidature(program, ps.getStatus());
-                student.candidatures().add(candidature);
-                students.add(student);
+                if (students.containsKey(student.id())) {
+                    students.get(student.id()).candidatures().add(candidature);
+                } else {
+                    student.candidatures().add(candidature);
+                    students.put(student.id(), student);
+                }
             }
         });
 
         Set<Integer> studentsByScholarshipIds = studentScholarshipByScholarship.stream().map(s -> s.getId().getStudentId()).collect(Collectors.toSet());
 
-        return students.stream().filter(s -> studentsByScholarshipIds.contains(s.id())).toList();
+        return students.values().stream().filter(s -> studentsByScholarshipIds.contains(s.id())).toList();
     }
 
     public Student findById(int id) {
