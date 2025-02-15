@@ -4,7 +4,7 @@ import axios from "axios";
 const useAxiosAuth = (username: string, password: string) => {
     const axiosInstance = useMemo(() => {
         return axios.create({
-            baseURL: "http://localhost:8080",
+            baseURL: "https://localhost:8080",
             withCredentials: false,
             auth: {
                 username: username,
