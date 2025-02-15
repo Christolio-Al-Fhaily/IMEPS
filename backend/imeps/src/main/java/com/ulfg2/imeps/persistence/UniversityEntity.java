@@ -12,12 +12,9 @@ public class UniversityEntity {
     private int countryId;
     private int conventionId;
 
-    public UniversityEntity() {
-    }
+    private String logoUrl;
 
-    public UniversityEntity(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public UniversityEntity() {
     }
 
     public int getId() {
@@ -50,5 +47,13 @@ public class UniversityEntity {
 
     public void setConventionId(int convention_id) {
         this.conventionId = convention_id;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

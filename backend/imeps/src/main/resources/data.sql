@@ -18,11 +18,11 @@ VALUES ('Convention 1', '2014-06-03', 'attachment 1'),
        ('Convention 2', '2014-06-03', 'attachment 2'),
        ('Convention 2', '2014-06-03', 'attachment 2');
 
-INSERT INTO universities (name, country_id, convention_id)
-VALUES ('Polytech Paris', 1, 1),
-       ('Mine Saint Etienne', 1, 2),
-       ('Telecom Paris', 1, 3),
-       ('Torino', 2, 4);
+INSERT INTO universities (name, country_id, convention_id, logo_url)
+VALUES ('Polytech Paris', 1, 1, 'https://yt3.googleusercontent.com/ytc/AIdro_lt0hVfilYsYU9BecVnkNpVLMdbm8GT8XXgqwxJfulZeas=s900-c-k-c0x00ffffff-no-rj'),
+       ('Mine Saint Etienne', 1, 2, 'https://campusnumerique.auvergnerhonealpes.fr/app/uploads/2020/06/logo_minesstetienne.jpg'),
+       ('Telecom Paris', 1, 3, 'https://www.telecom-paris.fr/wp-content-EvDsK19/uploads/2024/02/TP-ExEd-RVB-502x660.png'),
+       ('Torino', 2, 4, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvoilwUtpnMldTPT9HFwXg4WnYh9zv4DLY0Q&s');
 
 -- Insert students corresponding to the existing users
 INSERT INTO students (first_name, last_name, phone_number, std_id, academic_year, department, grade, user_id)

@@ -32,7 +32,7 @@ public class UniversityService {
         CountryEntity country = countryService.getByCountryCode(countryCode);
         List<UniversityEntity> universityEntities = uniRepo.findAllByCountryId(country.getId());
         List<University> universities = new ArrayList<>();
-        universityEntities.forEach(u -> universities.add(new University(u.getId(), u.getName(), new Country(country.getName(), country.getCode()), conventionService.getById(u.getConventionId()))));
+        universityEntities.forEach(u -> universities.add(new University(u.getId(), u.getName(), new Country(country.getName(), country.getCode()), conventionService.getById(u.getConventionId()), u.getLogoUrl())));
         return universities;
     }
 
@@ -57,7 +57,7 @@ public class UniversityService {
     private University toDomain(UniversityEntity entity) {
         Country country = getCountry(entity);
         Convention convention = conventionService.getById(entity.getConventionId());
-        return new University(entity.getId(), entity.getName(), country, convention);
+        return new University(entity.getId(), entity.getName(), country, convention, entity.getLogoUrl());
     }
 
     private Country getCountry(UniversityEntity universityEntity) {
@@ -72,6 +72,7 @@ public class UniversityService {
         universityEntity.setCountryId(countryEntity.getId());
         universityEntity.setName(university.name());
         universityEntity.setConventionId(conventionId);
+        universityEntity.setLogoUrl(university.logoUrl());
         uniRepo.save(universityEntity);
     }
 }
