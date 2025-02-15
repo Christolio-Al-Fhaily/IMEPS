@@ -19,8 +19,8 @@ public class StudentController {
 
     @GetMapping("/students")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public List<Student> getByUlBranchAndStatus(@RequestParam(value = "ulbranch", required = false) Integer ulBranch, @RequestParam(value = "status", required = false) String status, @RequestParam(value = "scholarshipid", required = false) Integer scholarshipId) {
-        return service.findByUlBranchAndByStatus(ulBranch, status, scholarshipId);
+    public List<Student> getStudentsWithFilters(@RequestParam(value = "ulbranch", required = false) Integer ulBranch, @RequestParam(value = "status", required = false) String status, @RequestParam(value = "scholarshipid", required = false) Integer scholarshipId) {
+        return service.findByFilter(ulBranch, status, scholarshipId);
     }
 
     @PostMapping("/students/{studentId}/programs/{programId}")
