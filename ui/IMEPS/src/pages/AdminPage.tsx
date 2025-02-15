@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -26,50 +26,65 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { RepeatIcon } from "@chakra-ui/icons";
+import { fetchUniversities, University } from "../services/universityService";
+import useAxiosAuth from "../hooks/useAxiosAuth";
+import { fetchStudents, Student } from "../services/studentsService";
 
-const Admin: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<
-    "universities" | "scholarships" | "students"
-  >("universities");
-  const [filterStatus, setFilterStatus] = useState<"All" | "Accepted" | "Not Accepted" | "Waitlisted">("All");
+const AdminPage: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("universities");
+  const [selectedArray, setSelectedArray] = useState<any[]>([]);
+  const [filterStatus, setFilterStatus] = useState<string>("All");
+  const [filterBranch, setFilterBranch] = useState<string>("All");
+  const [filterScholarship, setFilterScholarship] = useState<string>("All");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
-  const [newItem, setNewItem] = useState({});
+  // const [newItem, setNewItem] = useState({});
   const toast = useToast();
 
-  // Mock data
-  const [universities, setUniversities] = useState([
-    { id: 1, name: "Harvard University", location: "USA" },
-    { id: 2, name: "University of Oxford", location: "UK" },
-  ]);
+  // // Mock data
+  // const [universities, setUniversities] = useState([
+  //   { id: 1, name: "Harvard University", location: "USA" },
+  //   { id: 2, name: "University of Oxford", location: "UK" },
+  // ]);
 
   const [scholarships, setScholarships] = useState([
-    { id: 1, name: "Fulbright Scholarship", amount: "$20,000" },
-    { id: 2, name: "Chevening Scholarship", amount: "£18,000" },
+    { id: 1, name: "Fulbright Scholarship", amount: "$20,000", students: [] },
+    { id: 2, name: "Chevening Scholarship", amount: "£18,000", students: [] },
   ]);
 
-  const [students, setStudents] = useState([
-    { id: 1, name: "John Doe", email: "john@example.com", status: "Accepted" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", status: "Waitlisted" },
-    { id: 3, name: "Alice Johnson", email: "alice@example.com", status: "Not Accepted" },
-  ]);
+  // const [students, setStudents] = useState([
+  //   { id: 1, name: "John Doe", email: "john@example.com", status: "Accepted", branch: "1", scholarshipId: null },
+  //   { id: 2, name: "Jane Smith", email: "jane@example.com", status: "Waitlisted", branch: "2", scholarshipId: null },
+  //   { id: 3, name: "Alice Johnson", email: "alice@example.com", status: "Not Accepted", branch: "3", scholarshipId: 1 },
+  // ]);
 
   // Get data based on selected category
-  const getData = () => {
+  let universities: University[] = [];
+  // let scholarships: Scholarship[] = [];
+  let students: Student[] = [];
+  const axiosInstance = useAxiosAuth("admin", "password");
+  const getData = async () => {
     switch (selectedCategory) {
       case "universities":
-        return universities;
+        universities = await fetchUniversities(axiosInstance);
+        setSelectedArray([...universities]);
+        break;
       case "scholarships":
-        return scholarships;
+        // scholarships = await fetchScholarships(axiosInstance);
+        setSelectedArray([...scholarships]);
+        break;
       case "students":
-        return filterStatus === "All"
-          ? students
-          : students.filter((student) => student.status === filterStatus);
-      default:
-        return [];
+        students = await fetchStudents(axiosInstance);
+        console.log(students)
+        setSelectedArray([...students]);
+        break;
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, [selectedCategory]);
 
   // Handle Create
   const handleCreate = () => {
@@ -101,19 +116,15 @@ const Admin: React.FC = () => {
         duration: 2000,
         isClosable: true,
       });
+      //TODO delete api call
       return;
     }
     switch (selectedCategory) {
       case "universities":
-        setUniversities(universities.filter((uni) => uni.id !== selectedItem.id));
         break;
       case "scholarships":
-        setScholarships(scholarships.filter((scholarship) => scholarship.id !== selectedItem.id));
         break;
       case "students":
-        setStudents(students.filter((student) => student.id !== selectedItem.id));
-        break;
-      default:
         break;
     }
     setSelectedItem(null);
@@ -128,21 +139,8 @@ const Admin: React.FC = () => {
 
   // Handle adding new item
   const handleAddItem = () => {
-    switch (selectedCategory) {
-      case "universities":
-        setUniversities([...universities, { id: universities.length + 1, ...newItem }]);
-        break;
-      case "scholarships":
-        setScholarships([...scholarships, { id: scholarships.length + 1, ...newItem }]);
-        break;
-      case "students":
-        setStudents([...students, { id: students.length + 1, ...newItem }]);
-        break;
-      default:
-        break;
-    }
+    //TODO refresh
     setIsCreateModalOpen(false);
-    setNewItem({});
     toast({
       title: "Success",
       description: `New ${selectedCategory.slice(0, -1)} added`,
@@ -153,43 +151,43 @@ const Admin: React.FC = () => {
   };
 
   // Handle updating an item
-  const handleUpdateItem = () => {
-    switch (selectedCategory) {
-      case "universities":
-        setUniversities(
-          universities.map((uni) =>
-            uni.id === selectedItem.id ? { ...uni, ...newItem } : uni
-          )
-        );
-        break;
-      case "scholarships":
-        setScholarships(
-          scholarships.map((scholarship) =>
-            scholarship.id === selectedItem.id ? { ...scholarship, ...newItem } : scholarship
-          )
-        );
-        break;
-      case "students":
-        setStudents(
-          students.map((student) =>
-            student.id === selectedItem.id ? { ...student, ...newItem } : student
-          )
-        );
-        break;
-      default:
-        break;
-    }
-    setIsUpdateModalOpen(false);
-    setSelectedItem(null);
-    setNewItem({});
-    toast({
-      title: "Updated",
-      description: `${selectedCategory.slice(0, -1)} updated successfully`,
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-    });
-  };
+  // const handleUpdateItem = () => {
+  //   switch (selectedCategory) {
+  //     case "universities":
+  //       setUniversities(
+  //         universities.map((uni) =>
+  //           uni.id === selectedItem.id ? { ...uni, ...newItem } : uni
+  //         )
+  //       );
+  //       break;
+  //     case "scholarships":
+  //       setScholarships(
+  //         scholarships.map((scholarship) =>
+  //           scholarship.id === selectedItem.id ? { ...scholarship, ...newItem } : scholarship
+  //         )
+  //       );
+  //       break;
+  //     case "students":
+  //       setStudents(
+  //         students.map((student) =>
+  //           student.id === selectedItem.id ? { ...student, ...newItem } : student
+  //         )
+  //       );
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setIsUpdateModalOpen(false);
+  //   setSelectedItem(null);
+  //   setNewItem({});
+  //   toast({
+  //     title: "Updated",
+  //     description: `${selectedCategory.slice(0, -1)} updated successfully`,
+  //     status: "success",
+  //     duration: 2000,
+  //     isClosable: true,
+  //   });
+  // };
 
   // Handle refresh
   const handleRefresh = () => {
@@ -207,6 +205,65 @@ const Admin: React.FC = () => {
     setSelectedItem(item);
   };
 
+  // Handle PDF generation
+  const handleGeneratePDF = () => {
+    toast({
+      title: "PDF Generated",
+      description: `PDF generated for selected data`,
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
+  // Handle Power BI integration
+  const handlePowerBI = () => {
+    toast({
+      title: "Power BI",
+      description: `Power BI integration not implemented yet`,
+      status: "info",
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
+  // Handle sending emails
+  const handleSendEmails = () => {
+    if (selectedCategory !== "students") {
+      toast({
+        title: "Error",
+        description: `Emails can only be sent to students`,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      return;
+    }
+    toast({
+      title: "Emails Sent",
+      description: `Emails sent to selected students`,
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
+  // Replace the existing headers logic with this:
+  const getHeaders = (array: any[]) => {
+    if (array.length === 0) return [];
+    const allHeaders = Object.keys(array[0]);
+    const ignoredHeaders = ['convention', 'logoUrl', 'candidatures', 'id', 'students'];
+    return allHeaders.filter((h: string) => !ignoredHeaders.includes(h));
+  };
+
+  // Update the headers constant to use the new function:
+  const handleCategoryChange = (category: string, data: any[]) => {
+    setSelectedCategory(category);
+    setSelectedArray([...data]); // Create a new reference
+    setSelectedItem(null); // Clear selected row
+  };
+  const headers = getHeaders(selectedArray);
+
   return (
     <Box p={5}>
       <Heading as="h1" mb={8} textAlign="center">
@@ -218,26 +275,26 @@ const Admin: React.FC = () => {
         <ButtonGroup spacing={4}>
           <Button
             colorScheme={selectedCategory === "universities" ? "teal" : "gray"}
-            onClick={() => setSelectedCategory("universities")}
+            onClick={() => handleCategoryChange("universities", universities)}
           >
             Universities
           </Button>
           <Button
             colorScheme={selectedCategory === "scholarships" ? "teal" : "gray"}
-            onClick={() => setSelectedCategory("scholarships")}
+            onClick={() => handleCategoryChange("scholarships", scholarships)}
           >
             Scholarships
           </Button>
           <Button
             colorScheme={selectedCategory === "students" ? "teal" : "gray"}
-            onClick={() => setSelectedCategory("students")}
+            onClick={() => handleCategoryChange("students", students)}
           >
             Students
           </Button>
         </ButtonGroup>
       </Center>
 
-      {/* CRUD Buttons and Filter */}
+      {/* CRUD Buttons and Filters */}
       <Center mb={8}>
         <ButtonGroup spacing={4}>
           <Button colorScheme="blue" onClick={handleCreate}>
@@ -260,6 +317,15 @@ const Admin: React.FC = () => {
                 <option value="Not Accepted">Not Accepted</option>
                 <option value="Waitlisted">Waitlisted</option>
               </Select>
+              <Select
+                value={filterBranch}
+                onChange={(e) => setFilterBranch(e.target.value as "All" | "1" | "2" | "3")}
+              >
+                <option value="All">All Branches</option>
+                <option value="1">Branch 1</option>
+                <option value="2">Branch 2</option>
+                <option value="3">Branch 3</option>
+              </Select>
               <IconButton
                 aria-label="Refresh"
                 icon={<RepeatIcon />}
@@ -270,73 +336,70 @@ const Admin: React.FC = () => {
         </ButtonGroup>
       </Center>
 
+      {/* Additional Buttons */}
+      <Center mb={8}>
+        <ButtonGroup spacing={4}>
+          <Button colorScheme="purple" onClick={handleGeneratePDF}>
+            Generate PDF
+          </Button>
+          <Button colorScheme="pink" onClick={handlePowerBI}>
+            Power BI
+          </Button>
+          {selectedCategory === "students" && (
+            <Button colorScheme="green" onClick={handleSendEmails}>
+              Send Emails
+            </Button>
+          )}
+        </ButtonGroup>
+      </Center>
+
       {/* Table Viewer */}
       <Box overflowX="auto">
         <Table variant="simple">
           <Thead>
             <Tr>
-              {selectedCategory === "universities" && (
-                <>
-                  <Th>ID</Th>
-                  <Th>Name</Th>
-                  <Th>Location</Th>
-                </>
-              )}
-              {selectedCategory === "scholarships" && (
-                <>
-                  <Th>ID</Th>
-                  <Th>Name</Th>
-                  <Th>Amount</Th>
-                </>
-              )}
-              {selectedCategory === "students" && (
-                <>
-                  <Th>ID</Th>
-                  <Th>Name</Th>
-                  <Th>Email</Th>
-                  <Th>Status</Th>
-                </>
+              {headers.map((header) => (
+                <Th key={header}>{header}</Th>
+              )
               )}
             </Tr>
           </Thead>
           <Tbody>
-            {getData().map((item) => (
-              <Tr
-                key={item.id}
-                bg={selectedItem?.id === item.id ? "teal.50" : "transparent"}
-                onClick={() => handleRowClick(item)}
-                cursor="pointer"
-              >
-                {selectedCategory === "universities" && (
-                  <>
-                    <Td>{item.id}</Td>
-                    <Td>{item.name}</Td>
-                    <Td>{item.location}</Td>
-                  </>
-                )}
-                {selectedCategory === "scholarships" && (
-                  <>
-                    <Td>{item.id}</Td>
-                    <Td>{item.name}</Td>
-                    <Td>{item.amount}</Td>
-                  </>
-                )}
-                {selectedCategory === "students" && (
-                  <>
-                    <Td>{item.id}</Td>
-                    <Td>{item.name}</Td>
-                    <Td>{item.email}</Td>
-                    <Td>{item.status}</Td>
-                  </>
-                )}
-              </Tr>
-            ))}
+            {selectedArray.map((item, index) => {
+              console.log("selected array", selectedArray)
+              return (
+                <Tr
+                  key={index}
+                  bg={selectedItem === item ? "teal.50" : "transparent"}
+                  onClick={() => handleRowClick(item)}
+                  cursor="pointer">
+                  {headers.map((header) => {
+                    if (header === "country") {
+                      return (
+                        <Td key={header}>{item[header].name}</Td>
+                      )
+                    }
+                    else if (header === "convention") {
+                      return (
+                        <Td key={header}>{item[header].name}</Td>
+                      )
+                    }
+                    else {
+                      return (
+                        <Td key={header}>{item[header]}</Td>
+                      )
+                    }
+                  }
+                  )}
+                </Tr>
+              )
+            })}
           </Tbody>
         </Table>
       </Box>
 
       {/* Create Modal */}
-      <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
+      {/* <Modal isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add New {selectedCategory.slice(0, -1)}</ModalHeader>
@@ -405,6 +468,31 @@ const Admin: React.FC = () => {
                     <option value="Waitlisted">Waitlisted</option>
                   </Select>
                 </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Branch</FormLabel>
+                  <Select
+                    placeholder="Select branch"
+                    onChange={(e) => setNewItem({ ...newItem, branch: e.target.value })}
+                  >
+                    <option value="1">Branch 1</option>
+                    <option value="2">Branch 2</option>
+                    <option value="3">Branch 3</option>
+                  </Select>
+                </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Scholarship</FormLabel>
+                  <Select
+                    placeholder="Select scholarship"
+                    onChange={(e) => setNewItem({ ...newItem, scholarshipId: parseInt(e.target.value) })}
+                  >
+                    <option value="">None</option>
+                    {scholarships.map((scholarship) => (
+                      <option key={scholarship.id} value={scholarship.id}>
+                        {scholarship.name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
               </>
             )}
           </ModalBody>
@@ -414,10 +502,10 @@ const Admin: React.FC = () => {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
 
       {/* Update Modal */}
-      <Modal isOpen={isUpdateModalOpen} onClose={() => setIsUpdateModalOpen(false)}>
+      {/* <Modal isOpen={isUpdateModalOpen} onClose={() => setIsUpdateModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Update {selectedCategory.slice(0, -1)}</ModalHeader>
@@ -493,6 +581,33 @@ const Admin: React.FC = () => {
                     <option value="Waitlisted">Waitlisted</option>
                   </Select>
                 </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Branch</FormLabel>
+                  <Select
+                    placeholder="Select branch"
+                    defaultValue={selectedItem?.branch}
+                    onChange={(e) => setNewItem({ ...newItem, branch: e.target.value })}
+                  >
+                    <option value="1">Branch 1</option>
+                    <option value="2">Branch 2</option>
+                    <option value="3">Branch 3</option>
+                  </Select>
+                </FormControl>
+                <FormControl mt={4}>
+                  <FormLabel>Scholarship</FormLabel>
+                  <Select
+                    placeholder="Select scholarship"
+                    defaultValue={selectedItem?.scholarshipId}
+                    onChange={(e) => setNewItem({ ...newItem, scholarshipId: parseInt(e.target.value) })}
+                  >
+                    <option value="">None</option>
+                    {scholarships.map((scholarship) => (
+                      <option key={scholarship.id} value={scholarship.id}>
+                        {scholarship.name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
               </>
             )}
           </ModalBody>
@@ -502,9 +617,9 @@ const Admin: React.FC = () => {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </Box>
   );
 };
 
-export default Admin;
+export default AdminPage;
