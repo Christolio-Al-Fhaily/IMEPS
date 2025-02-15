@@ -3,14 +3,12 @@ package com.ulfg2.imeps.service;
 import com.ulfg2.imeps.domain.Candidature;
 import com.ulfg2.imeps.domain.Program;
 import com.ulfg2.imeps.domain.Student;
-import com.ulfg2.imeps.persistence.ProgramStudentEntity;
-import com.ulfg2.imeps.persistence.StudentEntity;
-import com.ulfg2.imeps.persistence.StudentScholarshipEntity;
-import com.ulfg2.imeps.persistence.UserEntity;
+import com.ulfg2.imeps.persistence.*;
 import com.ulfg2.imeps.repo.ProgramStudentRepository;
 import com.ulfg2.imeps.repo.StudentRepository;
 import com.ulfg2.imeps.repo.StudentScholarshipRepository;
 import com.ulfg2.imeps.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,7 @@ public class StudentService {
 
         if (status != null)
             programStudentsByStatus = programStudentsByStatus.stream().filter(ps -> ps.getStatus().equals(status)).toList();
-        if(scholarshipId != null)
+        if (scholarshipId != null)
             studentScholarshipByScholarship = studentScholarshipByScholarship.stream().filter(ps -> ps.getId().getScholarshipId() == scholarshipId).toList();
 
         programStudentsByStatus.forEach(ps -> {
@@ -64,6 +62,27 @@ public class StudentService {
         return toDomain(entity, user.getUlBranch(), user.getUsername());
     }
 
+    public void createProgramStudent(int studentId, int programId) {
+        ProgramStudentId id = new ProgramStudentId(studentId, programId);
+        ProgramStudentEntity entity = new ProgramStudentEntity(id, "pending");
+        programStudentRepository.save(entity);
+    }
+
+    @Transactional
+    public void deleteProgramStudent(int studentId, int programId) {
+        programStudentRepository.deleteById(new ProgramStudentId(studentId, programId));
+    }
+
+    public void createStudentScholarship(int studentId, int scholarshipId) {
+        StudentScholarshipId id = new StudentScholarshipId(studentId, scholarshipId);
+        StudentScholarshipEntity entity = new StudentScholarshipEntity(id, "pending");
+        studentScholarshipRepository.save(entity);
+    }
+
+    @Transactional
+    public void deleteStudentScholarship(int studentId, int scholarshipId) {
+        studentScholarshipRepository.deleteById(new StudentScholarshipId(studentId, scholarshipId));
+    }
 
     private Student toDomain(StudentEntity entity, int ulBranch, String email) {
         return new Student(entity.getId(),

@@ -31,4 +31,7 @@ public class CountryService {
         return repo.findById(id);
     }
 
+    public void create(CountryEntity entity) {
+        repo.save(entity);
+    }
 }
