@@ -16,12 +16,12 @@ public class ConventionService {
 
 
     public List<Convention> getAll() {
-        return repo.findAll().stream().map(c -> new Convention(c.getName(), c.getDate(), c.getAttachment())).toList();
+        return repo.findAll().stream().map(c -> new Convention(c.getId(), c.getName(), c.getDate(), c.getAttachment())).toList();
     }
 
     public Convention getById(int id) {
         ConventionEntity conventionEntity = repo.findById(id).get();
-        return new Convention(conventionEntity.getName(), conventionEntity.getDate(), conventionEntity.getAttachment());
+        return new Convention(conventionEntity.getId(), conventionEntity.getName(), conventionEntity.getDate(), conventionEntity.getAttachment());
     }
 
     public int create(Convention convention) {
