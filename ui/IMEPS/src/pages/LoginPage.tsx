@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Card, Container, FormControl, FormLabel, Heading, Input, useToast, VStack,} from "@chakra-ui/react";
 import useAxiosAuth from "../hooks/useAxiosAuth";
 import {useNavigate} from "react-router-dom";
@@ -31,7 +31,6 @@ const LoginPage = () => {
             const response = await axiosInstance.post("/login", {email, password});
             const user = response.data; // Assuming the response contains the user object
 
-
             toast({
                 title: "Success",
                 description: "Logged in successfully",
@@ -39,11 +38,10 @@ const LoginPage = () => {
                 duration: 3000,
                 isClosable: true,
             });
-            user.password = password;
-            setUser(user);
-            // Redirect based on isAdmin status
-            redirect();
+            user.password = password; // Save the password if needed
+            setUser(user); // Update user state
         } catch (error) {
+            console.log(error);
             toast({
                 title: "Error",
                 description: "Failed to log in. Please check your credentials.",
@@ -56,17 +54,26 @@ const LoginPage = () => {
         }
     };
 
+// Handle login trigger
     const handleLogin = async () => {
         await login();
     };
 
+// Redirect based on isAdmin status
     const redirect = () => {
-        if (user!.isAdmin) {
+        if (user && user.isAdmin) {
             navigate("/admin"); // Redirect to admin page
-        } else {
+        } else if (user) {
             navigate("/user"); // Redirect to user page
         }
-    }
+    };
+
+// UseEffect to watch for user state changes
+    useEffect(() => {
+        if (user) {
+            redirect(); // Redirect after user is set
+        }
+    }, [user]); // Runs whenever `user` changes
 
     return (
         <Container maxW="lg" centerContent my={"50"} color={"black"}>

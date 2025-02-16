@@ -31,7 +31,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@AuthenticationPrincipal UserDetails userDetails) {
         UserEntity userEntity = (UserEntity) userDetails;
-        return ResponseEntity.ok(new LoginResponse(userEntity.getUsername(), userEntity.getIsAdmin()));
+        return ResponseEntity.ok(new LoginResponse(userEntity.getId(), userEntity.getUsername(), userEntity.getIsAdmin()));
     }
 
     // Vulnerable endpoint for demonstration
