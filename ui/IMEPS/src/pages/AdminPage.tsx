@@ -29,8 +29,7 @@ import {RepeatIcon} from "@chakra-ui/icons";
 import {fetchUniversities, University} from "../services/UniversityService.tsx";
 import useAxiosAuth from "../hooks/useAxiosAuth";
 import {fetchStudents, Student} from "../services/StudentsService";
-import {useNavigate} from "react-router-dom";
-import {useUser} from "../services/UserServices.tsx";
+import {useUser} from "../services/UserService.tsx";
 import {fetchScholarships, Scholarship} from "../services/ScholarshipService.tsx";
 import {fetchCSV, fetchPDF} from "../services/FileService.tsx";
 
@@ -39,7 +38,7 @@ const AdminPage: React.FC = () => {
     const [selectedArray, setSelectedArray] = useState<any[]>([]);
     const [filterStatus, setFilterStatus] = useState<string>("");
     const [filterBranch, setFilterBranch] = useState<string>("");
-    const [filterScholarship, setFilterScholarship] = useState<string>("");
+    const [filterScholarship, setFilterScholarship] = useState<number>(0);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -47,7 +46,6 @@ const AdminPage: React.FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
     const [newItem, setNewItem] = useState({});
     const toast = useToast();
-    const navigate = useNavigate();
     const {user, setUser} = useUser();
     const [scholarships, setScholarships] = useState([]);
 
@@ -68,6 +66,8 @@ const AdminPage: React.FC = () => {
                 setSelectedArray([...students]);
                 break;
         }
+        const scholarshipsData = await fetchScholarships(axiosInstance);
+        setScholarships(scholarshipsData);
     };
 
     useEffect(() => {
@@ -265,7 +265,7 @@ const AdminPage: React.FC = () => {
 
     // Handle sending emails
     const handleSendEmails = () => {
-        if(selectedItem == null){
+        if (selectedItem == null) {
             toast({
                 title: "No student selected",
                 description: "Please select a student",
@@ -357,7 +357,7 @@ const AdminPage: React.FC = () => {
                                 <option value="">All</option>
                                 <option value="accepted">Accepted</option>
                                 <option value="rejected">Not Accepted</option>
-                                <option value="pending">Waitlisted</option>
+                                <option value="pending">Pending</option>
                             </Select>
                             <Select
                                 value={filterBranch}
@@ -367,6 +367,18 @@ const AdminPage: React.FC = () => {
                                 <option value="1">Branch 1</option>
                                 <option value="2">Branch 2</option>
                                 <option value="3">Branch 3</option>
+                            </Select>
+                            <Select
+                                value={filterScholarship ?? ''}
+                                onChange={(e) => setFilterScholarship(Number(e.target.value))}
+                            >
+                                <option value={0} key={0}>All</option>
+
+                                {scholarships.map((s: Scholarship) => (
+                                    <option value={s.id} key={s.id}>
+                                        {s.name}
+                                    </option>
+                                ))}
                             </Select>
                             <IconButton
                                 aria-label="Refresh"

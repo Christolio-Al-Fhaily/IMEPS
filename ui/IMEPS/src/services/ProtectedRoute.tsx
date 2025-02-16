@@ -1,6 +1,6 @@
 // ProtectedRoute.tsx
 import {Navigate, Outlet} from "react-router-dom";
-import {useUser} from "./UserServices.tsx";
+import {useUser} from "./UserService.tsx";
 
 interface ProtectedRouteProps {
     isAdminRequired?: boolean;

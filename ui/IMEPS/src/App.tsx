@@ -7,7 +7,7 @@ import UniversityPage from "./pages/UniversityPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
 import ScholarshipPage from "./pages/ScholarshipPage.tsx";
-import {UserProvider} from "./services/UserServices.tsx";
+import {UserProvider} from "./services/UserService.tsx";
 import ProtectedRoute from "./services/ProtectedRoute.tsx";
 
 const App = () => {
