@@ -6,6 +6,7 @@ export interface Country {
 }
 
 export interface Convention {
+  id: number
   name: string;
   date: string;  // ISO format date (YYYY-MM-DD)
   attachment: string;

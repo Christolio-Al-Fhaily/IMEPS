@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Box, Center, Heading, Image, SimpleGrid, Spinner, Text, useToast} from "@chakra-ui/react";
+import {Box, Button, Center, Heading, Image, SimpleGrid, Spinner, Text, useToast} from "@chakra-ui/react";
 import Slider from "react-slick";
 import {useAxios} from "../hooks/useAxiosAuth";
 import {Country, fetchCountries, fetchUniversities, University} from "../services/UniversityService.tsx";
 import {fetchProgramsByUniversity} from "../services/ProgramService.tsx";
+import {fetchConvention} from "../services/FileService.tsx";
 
 const UniversityPage: React.FC = () => {
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
@@ -169,7 +170,8 @@ const UniversityPage: React.FC = () => {
                                                                 <strong>Type:</strong> {program.type}
                                                             </Text>
                                                             <Text fontSize="md" color="gray.600">
-                                                                <strong>Submission Due Date:</strong> {program.submissionDueDate}
+                                                                <strong>Submission Due
+                                                                    Date:</strong> {program.submissionDueDate}
                                                             </Text>
                                                             <Text fontSize="md" color="gray.600">
                                                                 <strong>Academic Year:</strong> {program.academicYear}
@@ -179,6 +181,14 @@ const UniversityPage: React.FC = () => {
                                                 )}
                                             </Box>
                                         )}
+                                        <Button onClick={
+                                            async (event) => {
+                                                event.stopPropagation()
+                                                await fetchConvention(axiosInstance, uni.convention.id);
+                                            }
+                                        }>
+                                            Download Convention
+                                        </Button>
                                     </Box>
                                 ))
                             ) : (

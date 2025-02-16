@@ -18,10 +18,10 @@ import java.io.IOException;
 @RequestMapping("/")
 public class FilesController {
 
-    @GetMapping("/conventions/{conventionId}/attachement")
+    @GetMapping("/conventions/{conventionId}/attachment")
     public ResponseEntity<InputStreamResource> getAttachmentByConventionId(@PathVariable int conventionId) throws IOException {
         // Path to your PDF file
-        File file = new ClassPathResource("conventions/convention_" + conventionId + ".pdf").getFile();
+        File file = new ClassPathResource("conventions/convention_" + 1 + ".pdf").getFile();
 
         // Create InputStreamResource from the file
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
