@@ -1,39 +1,68 @@
-import { useState } from "react";
-import {
-    Button,
-    Card,
-    Container,
-    FormControl,
-    FormLabel,
-    Heading,
-    Input,
-    VStack
-} from "@chakra-ui/react";
-import axios from "axios";
+import {useState} from "react";
+import {Button, Card, Container, FormControl, FormLabel, Heading, Input, useToast, VStack,} from "@chakra-ui/react";
+import useAxiosAuth from "../hooks/useAxiosAuth";
+import {useNavigate} from "react-router-dom";
+import {useUser} from "../services/UserServices.tsx";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const toast = useToast();
+    const navigate = useNavigate();
+    const {user, setUser} = useUser()
+
+    const axiosInstance = useAxiosAuth(email, password);
+
+    const login = async () => {
+        if (!email || !password) {
+            toast({
+                title: "Error",
+                description: "Please enter both email and password",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const response = await axiosInstance.post("/login", {email, password});
+            const user = response.data; // Assuming the response contains the user object
+
+            // Save the user object in localStorage
+            localStorage.setItem("user", JSON.stringify(user));
+
+            toast({
+                title: "Success",
+                description: "Logged in successfully",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+            setUser(user);
+            // Redirect based on isAdmin status
+            if (user.isAdmin) {
+                navigate("/admin"); // Redirect to admin page
+            } else {
+                navigate("/user"); // Redirect to user page
+            }
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to log in. Please check your credentials.",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleLogin = async () => {
-        try {
-            const response = await axios.post("http://localhost:8080/login", {
-                username: email,
-                password: password
-            });
-
-            const { username, isAdmin } = response.data;
-
-            // Store credentials for Basic Auth
-            const credentials = btoa(`${email}:${password}`);
-            localStorage.setItem("authToken", credentials);
-            localStorage.setItem("username", username);
-            localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
-
-            console.log("Login Successful", response.data);
-        } catch (error) {
-            console.error("Error logging in", error);
-        }
+        await login();
     };
 
     return (
@@ -64,7 +93,14 @@ const LoginPage = () => {
                         />
                     </FormControl>
 
-                    <Button backgroundColor="primary" width="full" onClick={handleLogin} color={"white"}>
+                    <Button
+                        backgroundColor="primary"
+                        width="full"
+                        onClick={handleLogin}
+                        color={"white"}
+                        isLoading={isLoading}
+                        loadingText="Logging in..."
+                    >
                         Login
                     </Button>
                 </VStack>
