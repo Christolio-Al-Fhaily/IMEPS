@@ -348,6 +348,9 @@ const AdminPage: React.FC = () => {
                     <Button colorScheme="red" onClick={handleDelete}>
                         Delete
                     </Button>
+                </ButtonGroup>
+                <ButtonGroup ml={8} spacing={4}>
+
                     {selectedCategory === "students" && (
                         <>
                             <Select
@@ -389,7 +392,6 @@ const AdminPage: React.FC = () => {
                     )}
                 </ButtonGroup>
             </Center>
-
             {/* Additional Buttons */}
             <Center mb={8}>
                 <ButtonGroup spacing={4}>
