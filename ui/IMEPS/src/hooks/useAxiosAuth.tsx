@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import {useMemo} from "react";
 import axios from "axios";
 
 const useAxiosAuth = (username: string, password: string) => {
-    const axiosInstance = useMemo(() => {
+    return useMemo(() => {
         return axios.create({
             baseURL: "https://localhost:8080",
             withCredentials: false,
@@ -12,8 +12,15 @@ const useAxiosAuth = (username: string, password: string) => {
             }
         });
     }, [username, password]);
-
-    return axiosInstance;
 };
+
+export const useAxios = () => {
+    return useMemo(() => {
+        return axios.create({
+            baseURL: "https://localhost:8080",
+            withCredentials: false
+        });
+    }, []);
+}
 
 export default useAxiosAuth;

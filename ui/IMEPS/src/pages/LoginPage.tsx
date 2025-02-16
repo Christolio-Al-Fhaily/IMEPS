@@ -31,8 +31,6 @@ const LoginPage = () => {
             const response = await axiosInstance.post("/login", {email, password});
             const user = response.data; // Assuming the response contains the user object
 
-            // Save the user object in localStorage
-            localStorage.setItem("user", JSON.stringify(user));
 
             toast({
                 title: "Success",
@@ -41,13 +39,10 @@ const LoginPage = () => {
                 duration: 3000,
                 isClosable: true,
             });
+            user.password = password;
             setUser(user);
             // Redirect based on isAdmin status
-            if (user.isAdmin) {
-                navigate("/admin"); // Redirect to admin page
-            } else {
-                navigate("/user"); // Redirect to user page
-            }
+            redirect();
         } catch (error) {
             toast({
                 title: "Error",
@@ -64,6 +59,14 @@ const LoginPage = () => {
     const handleLogin = async () => {
         await login();
     };
+
+    const redirect = () => {
+        if (user!.isAdmin) {
+            navigate("/admin"); // Redirect to admin page
+        } else {
+            navigate("/user"); // Redirect to user page
+        }
+    }
 
     return (
         <Container maxW="lg" centerContent my={"50"} color={"black"}>

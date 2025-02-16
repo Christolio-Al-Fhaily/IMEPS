@@ -13,8 +13,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import useAxiosAuth from "../hooks/useAxiosAuth";
-import { fetchUniversities, University } from "../services/universityService";
-import { fetchPrograms, Program } from "../services/ProgramService";
+import { fetchUniversities, University } from "../services/UniversityService.tsx";
+import { fetchProgramsByUniversity, Program } from "../services/ProgramService";
 
 export default function UserPage() {
   const [universities, setUniversities] = useState<University[]>([]);
