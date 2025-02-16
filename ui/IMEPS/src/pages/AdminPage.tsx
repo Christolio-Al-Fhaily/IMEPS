@@ -26,9 +26,10 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { RepeatIcon } from "@chakra-ui/icons";
-import { fetchUniversities, University } from "../services/universityService";
+import { fetchUniversities, University } from "../services/UniversityService.tsx";
 import useAxiosAuth from "../hooks/useAxiosAuth";
-import { fetchStudents, Student } from "../services/studentsService";
+import { fetchStudents, Student } from "../services/StudentsService";
+import {useNavigate} from "react-router-dom";
 
 const AdminPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("universities");
@@ -41,6 +42,8 @@ const AdminPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   // const [newItem, setNewItem] = useState({});
   const toast = useToast();
+  const navigate = useNavigate();
+
 
   // // Mock data
   // const [universities, setUniversities] = useState([
