@@ -1,4 +1,10 @@
 import {AxiosInstance} from "axios";
+import {Program} from "./ProgramService.tsx";
+
+export interface Candidature{
+    program: Program,
+    status: string
+}
 
 export interface Student {
     id: number;
@@ -11,7 +17,7 @@ export interface Student {
     department: string;
     grade: number;
     ulBranch: number;
-    // candidatures: Candidature[];
+    candidatures: Candidature[];
 }
 
 export const fetchStudents = async (

@@ -48,6 +48,7 @@ const AdminPage: React.FC = () => {
     const toast = useToast();
     const {user, setUser} = useUser();
     const [scholarships, setScholarships] = useState([]);
+    const [isProgramsModalOpen, setIsProgramsModalOpen] = useState<boolean>(false);
 
     // Get data based on selected category
     const axiosInstance = useAxiosAuth(user!.username, user!.password);
@@ -104,17 +105,9 @@ const AdminPage: React.FC = () => {
                 duration: 2000,
                 isClosable: true,
             });
-            //TODO delete api call
             return;
         }
-        switch (selectedCategory) {
-            case "universities":
-                break;
-            case "scholarships":
-                break;
-            case "students":
-                break;
-        }
+        setSelectedArray(selectedArray.filter(item => item !== selectedItem));
         setSelectedItem(null);
         toast({
             title: "Deleted",
@@ -211,6 +204,13 @@ const AdminPage: React.FC = () => {
     const handleRowClick = (item: any) => {
         setSelectedItem(item);
     };
+
+    const handleRowDoubleClick = (item: Student | any) => {
+        if (selectedCategory !== "students")
+            return;
+
+        setIsProgramsModalOpen(true);
+    }
 
     // Handle PDF generation
     const handleGeneratePDF = () => {
@@ -430,6 +430,7 @@ const AdminPage: React.FC = () => {
                                     key={index}
                                     bg={selectedItem === item ? "teal.50" : "transparent"}
                                     onClick={() => handleRowClick(item)}
+                                    onDoubleClick={() => handleRowDoubleClick(item)}
                                     cursor="pointer">
                                     {headers.map((header) => {
                                             if (header === "country") {
@@ -528,6 +529,22 @@ const AdminPage: React.FC = () => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>)}
+            {isProgramsModalOpen && <Modal isOpen={isProgramsModalOpen} onClose={() => setIsProgramsModalOpen(false)}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>{selectedItem.firstName} {selectedItem.lastName}</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <ul>
+                            {selectedItem.candidatures.map((candidature, index) => (
+                                <li key={index}>
+                                    {candidature.program.description} - <strong>{candidature.status}</strong>
+                                </li>
+                            ))}
+                        </ul>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>}
         </Box>
     );
 };
