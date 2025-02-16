@@ -265,16 +265,26 @@ const AdminPage: React.FC = () => {
 
     // Handle sending emails
     const handleSendEmails = () => {
-        if (selectedCategory !== "students") {
+        if(selectedItem == null){
             toast({
-                title: "Error",
-                description: `Emails can only be sent to students`,
+                title: "No student selected",
+                description: "Please select a student",
                 status: "error",
                 duration: 2000,
                 isClosable: true,
             });
             return;
         }
+
+        const recipient = selectedItem["email"];
+        const subject = "Mobility Update";
+        const body = "This is a test email sent from the IMEPS application.";
+
+        // Construct the mailto URL
+        // Open the default email client
+        window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+
         toast({
             title: "Emails Sent",
             description: `Emails sent to selected students`,
