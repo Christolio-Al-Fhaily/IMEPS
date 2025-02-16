@@ -214,16 +214,16 @@ const AdminPage: React.FC = () => {
 
     // Handle PDF generation
     const handleGeneratePDF = () => {
-
+        const filteredHeaders = headers.filter((h) => h !== "phoneNumber");
         const rows = selectedArray.map((item) => {
-            return headers.map(h => {
+            return filteredHeaders.map(h => {
                 if (selectedCategory === "universities" && h === "country")
                     return item['country'].name
                 return item[h];
             });
         });
         console.log("rows:", rows)
-        fetchPDF(axiosInstance, {headers: headers, rows: rows, title: selectedCategory.toUpperCase()})
+        fetchPDF(axiosInstance, {headers: filteredHeaders, rows: rows, title: selectedCategory.toUpperCase()})
         toast({
             title: "PDF Generated",
             description: `PDF generated for selected data`,
