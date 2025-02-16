@@ -13,26 +13,33 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import useAxiosAuth from "../hooks/useAxiosAuth";
-import { fetchUniversities } from "../services/universityService";
+import { fetchUniversities, University } from "../services/universityService";
+import { fetchPrograms, Program } from "../services/ProgramService";
 
-export default function StudentSubmissionForm() {
-  const [universities, setUniversities] = useState([]);
-  const [selectedUniversity, setSelectedUniversity] = useState("");
-  const [selectedProgram, setSelectedProgram] = useState("");
-  const [file, setFile] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function UserPage() {
+  const [universities, setUniversities] = useState<University[]>([]);
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [selectedUniversity, setSelectedUniversity] = useState<string>("");
+  const [selectedProgram, setSelectedProgram] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const toast = useToast();
   const axiosInstance = useAxiosAuth("admin", "password");
 
   useEffect(() => {
-    const loadUniversities = async () => {
+    const loadData = async () => {
       try {
-        const universityData = await fetchUniversities(axiosInstance);
+        const [universityData, programData] = await Promise.all([
+          fetchUniversities(axiosInstance),
+          fetchPrograms(axiosInstance), // Pass axiosInstance if needed
+        ]);
         setUniversities(universityData);
+        setPrograms(programData);
       } catch (error) {
         toast({
-          title: "Error fetching universities",
-          description: "Unable to fetch universities. Please try again later.",
+          title: "Error fetching data",
+          description: "Unable to fetch universities and programs. Please try again later.",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -42,13 +49,67 @@ export default function StudentSubmissionForm() {
       }
     };
 
-    loadUniversities();
+    loadData();
   }, [axiosInstance, toast]);
 
-  const universityPrograms = {
-    "Harvard University": ["Computer Science", "Business Administration", "Medicine"],
-    "MIT": ["Engineering", "Artificial Intelligence", "Physics"],
-    "Stanford University": ["Law", "Data Science", "Biotechnology"],
+  // Filter programs based on selected university
+  const filteredPrograms = programs.filter(
+    (program) => program.university.name === selectedUniversity
+  );
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    if (!selectedUniversity || !selectedProgram || !file) {
+      toast({
+        title: "Incomplete form",
+        description: "Please fill out all fields and upload a file.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Create a FormData object for file upload
+      const formData = new FormData();
+      formData.append("university", selectedUniversity);
+      formData.append("program", selectedProgram);
+      formData.append("file", file);
+
+      // Submit the form data to the server
+      const response = await axiosInstance.post("/submit-application", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Handle success
+      toast({
+        title: "Application submitted",
+        description: "Your application has been submitted successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Reset form fields
+      setSelectedUniversity("");
+      setSelectedProgram("");
+      setFile(null);
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit application. Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -67,7 +128,11 @@ export default function StudentSubmissionForm() {
             {/* University Selection */}
             <FormControl>
               <FormLabel>University</FormLabel>
-              <Select placeholder="Select University" onChange={(e) => setSelectedUniversity(e.target.value)}>
+              <Select
+                placeholder="Select University"
+                value={selectedUniversity}
+                onChange={(e) => setSelectedUniversity(e.target.value)}
+              >
                 {universities.map((uni) => (
                   <option key={uni.id} value={uni.name}>
                     {uni.name}
@@ -79,26 +144,41 @@ export default function StudentSubmissionForm() {
             {/* Program Selection */}
             <FormControl isDisabled={!selectedUniversity}>
               <FormLabel>Program</FormLabel>
-              <Select placeholder="Select Program" onChange={(e) => setSelectedProgram(e.target.value)}>
-                {universityPrograms[selectedUniversity]?.map((program) => (
-                  <option key={program} value={program}>
-                    {program}
-                  </option>
-                )) || <option disabled>No programs available</option>}
+              <Select
+                placeholder="Select Program"
+                value={selectedProgram}
+                onChange={(e) => setSelectedProgram(e.target.value)}
+                isDisabled={filteredPrograms.length === 0}
+              >
+                {filteredPrograms.length > 0 ? (
+                  filteredPrograms.map((program) => (
+                    <option key={program.id} value={program.description}>
+                      {program.description}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>No programs available</option>
+                )}
               </Select>
             </FormControl>
 
             {/* File Upload */}
             <FormControl>
               <FormLabel>Upload File (PDF)</FormLabel>
-              <Input type="file" accept=".pdf" onChange={(e) => setFile(e.target.files[0])} />
+              <Input
+                type="file"
+                accept=".pdf"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+              />
             </FormControl>
 
             {/* Submit Button */}
             <Button
               colorScheme="teal"
               width="full"
+              onClick={handleSubmit}
               isDisabled={!selectedUniversity || !selectedProgram || !file}
+              isLoading={isSubmitting}
             >
               Submit
             </Button>
