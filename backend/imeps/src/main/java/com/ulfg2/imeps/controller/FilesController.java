@@ -1,12 +1,13 @@
 package com.ulfg2.imeps.controller;
 
-import com.ulfg2.imeps.domain.PDFRequest;
-import com.ulfg2.imeps.domain.PdfGenerator;
+import com.ulfg2.imeps.domain.FileRequest;
+import com.ulfg2.imeps.domain.FileGenerator;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -27,7 +28,7 @@ public class FilesController {
 
         // Set headers for the response
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=file.pdf");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -36,15 +37,29 @@ public class FilesController {
                 .body(resource);
     }
 
-    @GetMapping("/pdf")
-    public ResponseEntity<InputStreamResource> generatePdf(@RequestBody PDFRequest pdfRequest) throws IOException {
-        InputStreamResource pdf = PdfGenerator.createPdf(pdfRequest);
+    @PostMapping("/pdf")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<InputStreamResource> generatePdf(@RequestBody FileRequest pdfRequest) throws IOException {
+        InputStreamResource pdf = FileGenerator.createPdf(pdfRequest);
         // Set headers for the response
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=file.pdf");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.pdf");
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdf);
+    }
+
+    @PostMapping("/csv")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<InputStreamResource> generateCsv(@RequestBody FileRequest csvRequest) throws IOException {
+        InputStreamResource csv = FileGenerator.createCsv(csvRequest);
+        // Set headers for the response
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.csv");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(csv);
     }
 }

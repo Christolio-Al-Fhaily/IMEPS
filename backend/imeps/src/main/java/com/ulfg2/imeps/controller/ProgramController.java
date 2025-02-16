@@ -22,6 +22,16 @@ public class ProgramController {
         return service.getAll();
     }
 
+    @GetMapping("/programs/{programId}")
+    public Program getById(@PathVariable int programId){
+        return service.findById(programId);
+    }
+
+    @GetMapping("/programs/university/{uniId}")
+    public List<Program> getByUniId(@PathVariable int uniId){
+        return service.getByUniId(uniId);
+    }
+
     @PostMapping("/programs")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> createProgram(@RequestBody Program program) throws Exception {

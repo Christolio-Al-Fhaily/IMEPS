@@ -34,13 +34,30 @@ export interface Student {
     // candidatures: Candidature[];
   }
 
-export const fetchStudents = async (axiosInstance: AxiosInstance) => {
+export const fetchStudents = async (
+    axiosInstance: AxiosInstance,
+    ulBranch: string | null,
+    status: string | null,
+    scholarship: string | null
+) => {
     try {
-      const response = await axiosInstance.get("/students");
-      console.log("Fetched students:", response.data);
-      return response.data;
+        // Create an object to hold the query parameters
+        const queryParams: Record<string, string> = {};
+
+        // Add non-null parameters to the queryParams object
+        if (ulBranch) queryParams.ulbranch = ulBranch;
+        if (status) queryParams.status = status;
+        if (scholarship) queryParams.scholarship = scholarship;
+
+        // Convert the queryParams object to a query string
+        const queryString = new URLSearchParams(queryParams).toString();
+
+        // Make the request with the query string (if any)
+        const response = await axiosInstance.get(`/students${queryString ? `?${queryString}` : ""}`);
+        console.log("Fetched students:", response.data);
+        return response.data;
     } catch (error) {
-      console.error("Error fetching students:", error);
-      throw error;
+        console.error("Error fetching students:", error);
+        throw error;
     }
-  };
+};

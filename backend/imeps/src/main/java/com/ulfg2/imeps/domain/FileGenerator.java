@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class PdfGenerator {
+public class FileGenerator {
 
-    public static InputStreamResource createPdf(PDFRequest pdfRequest) throws IOException {
+    public static InputStreamResource createPdf(FileRequest pdfRequest) throws IOException {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
         document.addPage(page);
@@ -111,7 +111,45 @@ public class PdfGenerator {
         return new InputStreamResource(inputStream);
     }
 
+    public static InputStreamResource createCsv(FileRequest fileRequest) {
+        // Convert the FileRequest to CSV format (String)
+        String csvContent = generateCsvContent(fileRequest);
 
+        // Convert the CSV string into an InputStream
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(csvContent.getBytes());
+
+        // Return as InputStreamResource
+        return new InputStreamResource(byteArrayInputStream);
+    }
+
+    // Helper method to generate CSV content from FileRequest
+    private static String generateCsvContent(FileRequest fileRequest) {
+        StringBuilder csvBuilder = new StringBuilder();
+
+        // Add headers to the CSV
+        List<String> headers = fileRequest.headers();
+        for (int i = 0; i < headers.size(); i++) {
+            csvBuilder.append(headers.get(i));
+            if (i < headers.size() - 1) {
+                csvBuilder.append(",");
+            }
+        }
+        csvBuilder.append("\n");
+
+        // Add rows to the CSV
+        List<List<String>> rows = fileRequest.rows();
+        for (List<String> row : rows) {
+            for (int i = 0; i < row.size(); i++) {
+                csvBuilder.append(row.get(i));
+                if (i < row.size() - 1) {
+                    csvBuilder.append(",");
+                }
+            }
+            csvBuilder.append("\n");
+        }
+
+        return csvBuilder.toString();
+    }
 
 
 }

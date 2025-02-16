@@ -1,12 +1,12 @@
 import React from "react";
 
 const bourses = [
-  { name: "Scholarship A", details: "Details about Scholarship A" },
-  { name: "Scholarship B", details: "Details about Scholarship B" },
-  { name: "Scholarship C", details: "Details about Scholarship C" },
+  { name: "Scholarship A", details: "Details about ScholarshipPage A" },
+  { name: "Scholarship B", details: "Details about ScholarshipPage B" },
+  { name: "Scholarship C", details: "Details about ScholarshipPage C" },
 ];
 
-const Bourse: React.FC = () => {
+const ScholarshipPage: React.FC = () => {
   return (
     <div className="bourse">
       <h1>Scholarships</h1>
@@ -22,4 +22,4 @@ const Bourse: React.FC = () => {
   );
 };
 
-export default Bourse;
+export default ScholarshipPage;

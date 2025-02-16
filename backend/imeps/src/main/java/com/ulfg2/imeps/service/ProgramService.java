@@ -62,4 +62,8 @@ public class ProgramService {
     public void deleteProgram(int id) {
         repo.deleteById(id);
     }
+
+    public List<Program> getByUniId(int uniId) {
+        return toDomain(repo.findAllByUniversityId(uniId));
+    }
 }

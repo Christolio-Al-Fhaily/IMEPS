@@ -62,69 +62,57 @@ VALUES ('Convention 1', '2014-06-03', 'attachment 1'),
 INSERT INTO universities (name, country_id, convention_id, logo_url)
 VALUES
     -- France (country_id = 1)
-    ('Polytech Paris', 1, 1,
-     'https://yt3.googleusercontent.com/ytc/AIdro_lt0hVfilYsYU9BecVnkNpVLMdbm8GT8XXgqwxJfulZeas=s900-c-k-c0x00ffffff-no-rj'),
-    ('Mine Saint Etienne', 2, 2,
-     'https://campusnumerique.auvergnerhonealpes.fr/app/uploads/2020/06/logo_minesstetienne.jpg'),
+    ('Polytech Paris', 1, 1, 'https://yt3.googleusercontent.com/ytc/AIdro_lt0hVfilYsYU9BecVnkNpVLMdbm8GT8XXgqwxJfulZeas=s900-c-k-c0x00ffffff-no-rj'),
+    ('Mine Saint Etienne', 1, 2, 'https://campusnumerique.auvergnerhonealpes.fr/app/uploads/2020/06/logo_minesstetienne.jpg'),
     ('Telecom Paris', 1, 3, 'https://www.telecom-paris.fr/wp-content-EvDsK19/uploads/2024/02/TP-ExEd-RVB-502x660.png'),
-    ('Sorbonne University', 4, 4,
-     'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Sorbonne_University_logo.svg/1200px-Sorbonne_University_logo.svg.png'),
-    ('University of Lyon', 5, 5, 'https://www.universite-lyon.fr/sites/all/themes/ulysse/logo.png'),
+    ('Sorbonne University', 1, 4, 'https://emarinlab.obs-banyuls.fr/web/associes/img/logo_sorbonne.png'),
+    ('University of Lyon', 1, 5, 'https://www.universite-lyon.fr/uas/ksup/LOGO/UDL_logo_Quadri-01.svg'),
 
     -- Italy (country_id = 2)
     ('Torino', 2, 4, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvoilwUtpnMldTPT9HFwXg4WnYh9zv4DLY0Q&s'),
-    ('University of Milan', 2, 5,
-     'https://www.unimi.it/sites/default/files/2021-11/Logo%20Unimi%20rosso%20su%20bianco.png'),
-    ('Sapienza University of Rome', 2, 6,
-     'https://upload.wikimedia.org/wikipedia/en/thumb/4/4f/Sapienza_University_of_Rome_logo.svg/1200px-Sapienza_University_of_Rome_logo.svg.png'),
-    ('University of Bologna', 2, 7,
-     'https://www.unibo.it/it/ateneo/logo-e-immagine-coordinata/logo-universita-di-bologna'),
+    ('University of Milan', 2, 5, 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Unimi-logo.png/320px-Unimi-logo.png'),
+    ('Sapienza University of Rome', 2, 6, 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Uniroma1.svg/langfr-800px-Uniroma1.svg.png'),
+    ('University of Bologna', 2, 7, 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Seal_of_the_University_of_Bologna.svg/langfr-160px-Seal_of_the_University_of_Bologna.svg.png'),
 
     -- Germany (country_id = 3)
-    ('Technical University of Munich', 3, 8,
-     'https://www.tum.de/typo3conf/ext/tum_template/Resources/Public/Images/Logo_TUM_blue.svg'),
-    ('Heidelberg University', 3, 9,
-     'https://www.uni-heidelberg.de/md/zentral/universitaet/logo/logo_uni_hd_englisch_4c.png'),
-    ('Humboldt University of Berlin', 3, 10,
-     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Humboldt-Universit%C3%A4t_zu_Berlin.svg/1200px-Humboldt-Universit%C3%A4t_zu_Berlin.svg.png'),
+    ('Technical University of Munich', 3, 8, 'https://www.dwih-saopaulo.org/files/2019/01/tum-1-954x537.jpg'),
+    ('Heidelberg University', 3, 9, 'https://backend.uni-heidelberg.de/sites/default/files/site_logo/icon-symbol-uh-logo-black_1_0.svg'),
+    ('Humboldt University of Berlin', 3, 10, 'https://www.ni.hu-berlin.de/de/projekte/henrik-steffens-briefprojekt/logos/humboldt-universitaet-zu-berlin/@@download/Image/HU_Siegel_RGB.png'),
 
     -- Spain (country_id = 4)
-    ('University of Barcelona', 4, 11, 'https://www.ub.edu/web/ub/galeries/imatges/logo_ub/logo_UB.png'),
-    ('Complutense University of Madrid', 4, 12, 'https://www.ucm.es/data/cont/media/www/pag-76113/logoUCM.png'),
-    ('Autonomous University of Madrid', 4, 13,
-     'https://www.uam.es/ss/Satellite?blobcol=urldata&blobheader=image%2Fpng&blobkey=id&blobtable=MungoBlobs&blobwhere=1274486601119&ssbinary=true'),
+    ('University of Barcelona', 4, 11, 'https://estatics.web.ub.edu/image/company_logo?img_id=2946262&t=1739560121133'),
+    ('Complutense University of Madrid', 4, 12, 'https://www.ucm.es/themes/ucm24/media/img/logo.svg'),
+    ('Autonomous University of Madrid', 4, 13, 'https://www.uam.es/uam/media/img/1606893866850/uam-solo.svg'),
 
     -- Portugal (country_id = 5)
-    ('University of Lisbon', 5, 14, 'https://www.ulisboa.pt/sites/ulisboa.pt/files/logo_ulisboa.png'),
-    ('University of Porto', 5, 15, 'https://sigarra.up.pt/up/pt/web_base.gera_pagina?p_pagina=1005816'),
-    ('University of Coimbra', 5, 16, 'https://www.uc.pt/identidade/Marcas_UC_png/UC_H_FundoClaro_EN.png'),
+    ('University of Lisbon', 5, 14, 'https://th.bing.com/th/id/OIP.FJd7sdHusxJAqJimTugdEwHaKb?w=115&h=180&c=7&r=0&o=5&pid=1.7'),
+    ('University of Porto', 5, 15, 'https://th.bing.com/th/id/OIP.JtwjIe_JZ8_CuRK327mhswHaBn?w=349&h=76&c=7&r=0&o=5&pid=1.7'),
+    ('University of Coimbra', 5, 16, 'https://mma.prnewswire.com/media/1507229/Universidade_de_Coimbra_Logo.jpg?p=facebook'),
 
     -- Netherlands (country_id = 6)
-    ('University of Amsterdam', 6, 17, 'https://www.uva.nl/en/_images/UvA-logo-horizontal.svg'),
-    ('Delft University of Technology', 6, 18, 'https://www.tudelft.nl/static/templates/tudelft/dist/images/logo.svg'),
-    ('Leiden University', 6, 19, 'https://www.universiteitleiden.nl/logo/logo-universiteit-leiden.svg'),
+    ('University of Amsterdam', 6, 17, 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Amsterdamuniversitylogo.svg/langfr-320px-Amsterdamuniversitylogo.svg.png'),
+    ('Delft University of Technology', 6, 18, 'https://upload.wikimedia.org/wikipedia/fr/thumb/b/b3/Universit%C3%A9_de_technologie_de_Delft_-_Logo.png/175px-Universit%C3%A9_de_technologie_de_Delft_-_Logo.png'),
+    ('Leiden University', 6, 19, 'https://www.universiteitleiden.nl/design-1.1/assets/images/zegel.png'),
 
     -- Belgium (country_id = 7)
-    ('KU Leuven', 7, 20, 'https://www.kuleuven.be/meta/2020/img/logo.svg'),
-    ('Ghent University', 7, 21, 'https://www.ugent.be/logo.png'),
-    ('Université Libre de Bruxelles', 7, 22, 'https://www.ulb.be/sites/default/files/logo-ulb.png'),
+    ('KU Leuven', 7, 20, 'https://th.bing.com/th/id/R.8c1454f0bbd74483a8c8d34699ed9a93?rik=owGreVzz4PcL%2bA&riu=http%3a%2f%2fwww.digitalmeetsculture.net%2fwp-content%2fuploads%2f2012%2f05%2flogo_kuleuven.jpg&ehk=SqE5N%2bHy4tredLtG00BCljYer282y7qwlGjcQQT9zT4%3d&risl=&pid=ImgRaw&r=0'),
+    ('Ghent University', 7, 21, 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Ghent_University_logo_%28English%29.png/220px-Ghent_University_logo_%28English%29.png'),
+    ('Université Libre de Bruxelles', 7, 22, 'https://study-eu.s3.amazonaws.com/uploads/university/universit--libre-de-bruxelles-469-logo.png'),
 
     -- Switzerland (country_id = 8)
-    ('ETH Zurich', 8, 23, 'https://ethz.ch/etc/designs/ethz/clientlibs/static/images/ethz_logo_black.svg'),
-    ('University of Zurich', 8, 24, 'https://www.uzh.ch/cmsssl/en/logo.html'),
-    ('EPFL', 8, 25, 'https://www.epfl.ch/wp-content/themes/wp-theme-2018/assets/svg/epfl-logo.svg'),
+    ('ETH Zurich', 8, 23, 'https://logowik.com/content/uploads/images/eth-zurich1144.jpg'),
+    ('University of Zurich', 8, 24, 'https://th.bing.com/th/id/R.4c8ed123f077865fd7c66f32349389a5?rik=%2fII%2fN%2bmYpNunRg&pid=ImgRaw&r=0'),
+    ('EPFL', 8, 25, 'https://www.epfl.ch/wp-content/themes/wp-theme-2018/assets/svg/epfl-logo.svg?refresh=now'),
 
     -- Austria (country_id = 9)
-    ('University of Vienna', 9, 26, 'https://www.univie.ac.at/typo3conf/ext/unisite/Resources/Public/Images/logo.svg'),
-    ('Vienna University of Technology', 9, 27,
-     'https://www.tuwien.at/fileadmin/_processed_/c/1/csm_TU_Wien_Logo_2016_3f7f7f7f7f.png'),
-    ('University of Innsbruck', 9, 28,
-     'https://www.uibk.ac.at/typo3conf/ext/theme_uibk/Resources/Public/Images/logo.svg'),
+    ('University of Vienna', 9, 26, 'https://www.univie.ac.at/fileadmin/templates/GLOBAL/IMG/uni_logo_220.jpg'),
+    ('Vienna University of Technology', 9, 27, 'https://w7.pngwing.com/pngs/288/753/png-transparent-tu-wien-hd-logo-thumbnail.png'),
+    ('University of Innsbruck', 9, 28, 'https://th.bing.com/th?id=OSK.823daefb81a6c802a56cc02086b99628&w=102&h=102&c=7&o=6&pid=SANGAM'),
 
     -- Greece (country_id = 10)
-    ('National and Kapodistrian University of Athens', 10, 29, 'https://en.uoa.gr/logo.png'),
-    ('Aristotle University of Thessaloniki', 10, 30, 'https://www.auth.gr/sites/default/files/logo_auth.png'),
-    ('University of Patras', 10, 31, 'https://www.upatras.gr/sites/default/files/logo_upatras.png');
+    ('National and Kapodistrian University of Athens', 10, 29, 'https://en.uoa.gr/fileadmin/user_upload/uoa_logo_eng.svg'),
+    ('Aristotle University of Thessaloniki', 10, 30, 'https://www.auth.gr/wp-content/uploads/banner-horizontal-black-en.png'),
+    ('University of Patras', 10, 31, 'https://www.upatras.gr/wp-content/uploads/upatrasEN.jpg');;
 
 -- Insert students corresponding to the existing users
 INSERT INTO students (first_name, last_name, phone_number, std_id, academic_year, department, grade, user_id)

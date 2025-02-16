@@ -36,7 +36,7 @@ public class UniversityController {
 
     @PostMapping("/universities")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Void> createUniversity(@RequestBody University university, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Void> createUniversity(@RequestBody University university) {
         service.create(university);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
