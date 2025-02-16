@@ -16,7 +16,7 @@ import {
 import useAxiosAuth from "../hooks/useAxiosAuth";
 import {fetchUniversities, University} from "../services/UniversityService.tsx";
 import {fetchProgramsByUniversity, Program} from "../services/ProgramService";
-import {useUser} from "../services/UserServices.tsx";
+import {useUser} from "../services/UserService.tsx";
 import {fetchScholarships, Scholarship} from "../services/ScholarshipService.tsx";
 import {postProgramStudent, postScholarshipStudent} from "../services/StudentsService.tsx";
 
@@ -108,9 +108,14 @@ export default function UserPage() {
 
     const handleScholarshipChange = (e) => {
         const selectedScholarshipId = e.target.value;
-        const scholarship: Scholarship = scholarships.find((s) => s.id == selectedScholarshipId)!;
-        setSelectedScholarship(scholarship);
-        console.log(selectedScholarship)
+        if (selectedScholarshipId === 0)
+            setSelectedScholarship(null);
+        else {
+
+            const scholarship: Scholarship = scholarships.find((s) => s.id == selectedScholarshipId)!;
+            setSelectedScholarship(scholarship.id);
+            console.log(selectedScholarship)
+        }
     }
 
     useEffect(() => {
@@ -225,7 +230,6 @@ export default function UserPage() {
                             <FormLabel>Scholarship</FormLabel>
                             <Select
                                 placeholder="Select Scholarship"
-                                value={selectedScholarship ? selectedScholarship.id : ""}
                                 onChange={handleScholarshipChange}
                             >
                                 {scholarships.map((scholarship) => (

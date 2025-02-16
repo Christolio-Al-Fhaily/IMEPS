@@ -2,7 +2,7 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import {Box, Button, HStack, Image} from "@chakra-ui/react";
 import ulfg2logo from "../assets/ulfg2logo.jpg";
-import {useUser} from "../services/UserServices.tsx";
+import {useUser} from "../services/UserService.tsx";
 
 const Navbar = () => {
     const navigate = useNavigate();

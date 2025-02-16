@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Button, Card, Container, FormControl, FormLabel, Heading, Input, useToast, VStack,} from "@chakra-ui/react";
 import useAxiosAuth from "../hooks/useAxiosAuth";
 import {useNavigate} from "react-router-dom";
-import {useUser} from "../services/UserServices.tsx";
+import {useUser} from "../services/UserService.tsx";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");

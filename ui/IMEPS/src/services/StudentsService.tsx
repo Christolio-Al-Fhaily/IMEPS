@@ -18,21 +18,22 @@ export const fetchStudents = async (
     axiosInstance: AxiosInstance,
     ulBranch: string | null,
     status: string | null,
-    scholarship: string | null
+    scholarship: number | null
 ) => {
     try {
         // Create an object to hold the query parameters
-        const queryParams: Record<string, string> = {};
+        const queryParams: Record<string, string | number> = {};
 
         // Add non-null parameters to the queryParams object
         if (ulBranch) queryParams.ulbranch = ulBranch;
         if (status) queryParams.status = status;
-        if (scholarship) queryParams.scholarship = scholarship;
+        if (scholarship) queryParams.scholarshipid = scholarship;
 
         // Convert the queryParams object to a query string
         const queryString = new URLSearchParams(queryParams).toString();
 
         // Make the request with the query string (if any)
+        console.log("filter", `/students${queryString ? `?${queryString}` : ""}`)
         const response = await axiosInstance.get(`/students${queryString ? `?${queryString}` : ""}`);
         console.log("Fetched students:", response.data);
         return response.data;
