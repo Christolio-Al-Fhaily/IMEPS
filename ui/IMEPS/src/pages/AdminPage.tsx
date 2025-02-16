@@ -255,8 +255,8 @@ const AdminPage: React.FC = () => {
     // Handle Power BI integration
     const handlePowerBI = () => {
         toast({
-            title: "Power BI",
-            description: `Power BI integration not implemented yet`,
+            title: "Power BI Booting",
+            description: `Have a great visualisation session!`,
             status: "info",
             duration: 2000,
             isClosable: true,
