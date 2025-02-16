@@ -113,7 +113,7 @@ export default function UserPage() {
         else {
 
             const scholarship: Scholarship = scholarships.find((s) => s.id == selectedScholarshipId)!;
-            setSelectedScholarship(scholarship.id);
+            setSelectedScholarship(scholarship);
             console.log(selectedScholarship)
         }
     }
