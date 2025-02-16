@@ -24,7 +24,7 @@ public class StudentController {
     }
 
     @PostMapping("/students/{studentId}/programs/{programId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_STUDENT')")
     public ResponseEntity<Void> createProgramStudent(@PathVariable int studentId, @PathVariable int programId) {
         service.createProgramStudent(studentId, programId);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -38,7 +38,7 @@ public class StudentController {
     }
 
     @PostMapping("/students/{studentId}/scholarships/{scholarshipId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_STUDENT')")
     public ResponseEntity<Void> createStudentScholarship(@PathVariable int studentId, @PathVariable int scholarshipId) {
         service.createStudentScholarship(studentId, scholarshipId);
         return new ResponseEntity<>(HttpStatus.CREATED);

@@ -65,6 +65,7 @@ public class StudentService {
     }
 
     public void createProgramStudent(int studentId, int programId) {
+        
         ProgramStudentId id = new ProgramStudentId(studentId, programId);
         ProgramStudentEntity entity = new ProgramStudentEntity(id, "pending");
         programStudentRepository.save(entity);
